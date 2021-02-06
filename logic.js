@@ -82,6 +82,41 @@ function createMap(earthquakes) {
     layers: [streetmap, earthquakes]
   });
 
+  function getColor(d) {
+    return d < 1 ? 'rgb(255,255,255)' :
+          d < 2  ? 'rgb(255,225,225)' :
+          d < 3  ? 'rgb(255,195,195)' :
+          d < 4  ? 'rgb(255,165,165)' :
+          d < 5  ? 'rgb(255,135,135)' :
+          d < 6  ? 'rgb(255,105,105)' :
+          d < 7  ? 'rgb(255,75,75)' :
+          d < 8  ? 'rgb(255,45,45)' :
+          d < 9  ? 'rgb(255,15,15)' :
+                      'rgb(255,0,0)';
+}
+
+// Create a legend to display information about our map
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+    grades = [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    labels = [];
+
+    div.innerHTML+='Magnitude<br><hr>'
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+}
+
+return div;
+};
+
+legend.addTo(myMap);
 
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
